@@ -1,0 +1,33 @@
+var jaipur = ee.FeatureCollection("users/ucanwhatsappme/JaipurCity");
+
+Map.setCenter(75.78, 27.1052, 9);
+var data = ee.Image('CGIAR/SRTM90_V4');
+var elevation = data.select('elevation');
+var slope = ee.Terrain.slope(elevation);
+
+var image=slope.clip(jaipur);
+var bands = {
+  min: 0,
+  max: 4,
+ 
+};
+
+
+Map.addLayer(image,bands,"ELEVATION");
+
+
+var dataset2 = ee.Image("OpenLandMap/SOL/SOL_TEXTURE-CLASS_USDA-TT_M/v02");
+
+var bands2 = {
+  bands: ['b0'],
+  min: 1.0,
+  max: 12.0,
+  palette: [
+    "d5c36b","b96947","9d3706","ae868f","f86714","46d143",
+    "368f20","3e5a14","ffd557","fff72e","ff5a9d","ff005b",
+  ]
+};
+
+var clip2=dataset2.clip(jaipur);
+
+Map.addLayer(clip2,bands2,"SOIL TYPE");
