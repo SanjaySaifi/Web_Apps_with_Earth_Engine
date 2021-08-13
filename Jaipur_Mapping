@@ -96,6 +96,25 @@ Map.addLayer(clip5, bands5, 'hydrography');
 
 
 
+                                                                                        // rgb true color image 
+
+var data6 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+    .filterDate('2020-05-01', '2020-06-01');
+    
+var clip6 =data6.mean().clip(jaipur);
+
+var bands6 = {
+  bands: ['SR_B4', 'SR_B3', 'SR_B2'],
+  min: 0.0,
+  max: 30000.0,
+};
+
+
+Map.addLayer(clip6, bands6, 'True Color');
+
+
+
+
 
 
 
