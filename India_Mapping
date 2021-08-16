@@ -1,0 +1,34 @@
+// forest non forest
+
+var dataset = ee.ImageCollection('JAXA/ALOS/PALSAR/YEARLY/FNF')
+                  .filterDate('2017-01-01', '2017-12-31');
+var forestNonForest = dataset.select('fnf');
+var clip=forestNonForest.mean().clip(india);
+var bands = {
+  min: 1.0,
+  max: 3.0,
+  palette: ['006400', 'FEFF99', '0000FF'],
+};
+Map.setCenter(76.85, 25.37, 5);
+Map.addLayer(clip, bands, 'Forest/Non-Forest');
+
+
+
+
+
+// land cover
+
+var dataset1 = ee.ImageCollection('MODIS/006/MCD12Q1');
+var igbpLandCover = dataset1.select('LC_Type1');
+var bands2 = {
+  min: 1.0,
+  max: 17.0,
+  palette: [
+    '05450a', '086a10', '54a708', '78d203', '009900', 'c6b044', 'dcd159',
+    'dade48', 'fbff13', 'b6ff05', '27ff87', 'c24f44', 'a5a5a5', 'ff6d4c',
+    '69fff8', 'f9ffa4', '1c0dff'
+  ],
+};
+var clip2=igbpLandCover.mean().clip(india);
+
+Map.addLayer(clip2, bands2, 'land cover');
