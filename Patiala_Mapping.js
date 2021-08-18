@@ -1,4 +1,5 @@
 var region = ee.FeatureCollection("users/ucanwhatsappme/Patiala");
+
 Map.setCenter(76.3869, 30.3398, 9);
 
 
@@ -6,7 +7,7 @@ Map.setCenter(76.3869, 30.3398, 9);
 // rgb true color image 
 
 var data6 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
-    .filterDate('2020-05-01', '2020-06-01');
+    .filterDate('2019-05-01', '2019-06-01');
     
 var clip6 =data6.mean().clip(region);
 
@@ -23,23 +24,13 @@ Map.addLayer(clip6, bands6, 'True Color');
 
 
 //landcover map
-var dataset7 =
-    ee.ImageCollection('Oxford/MAP/IGBP_Fractional_Landcover_5km_Annual')
-        .filter(ee.Filter.date('2012-01-01', '2012-12-31'));
-        
-var landcover7 = dataset7.select('Overall_Class');
-var clip7=landcover7.mean().clip(region);
-var bands7 = {
-  min: 1.0,
-  max: 19.0,
-  palette: [
-    '032f7e', '02740b', '02740b', '8cf502', '8cf502', 'a4da01', 'ffbd05',
-    'ffbd05', '7a5a02', 'f0ff0f', '869b36', '6091b4', '999999', 'ff4e4e',
-    'ff4e4e', 'ffffff', 'feffc0', '020202', '020202'
-  ],
-};
+var dataset7 = ee.Image("COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019")
+.select('discrete_classification');
 
-Map.addLayer(clip7, bands7, 'Landcover');
+var clip7=dataset7.clip(region);
+
+
+Map.addLayer(clip7,{}, 'Landcover');
 
 
 
