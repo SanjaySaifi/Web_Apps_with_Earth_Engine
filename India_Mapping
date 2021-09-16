@@ -50,4 +50,31 @@ var visualization3 = {
 Map.addLayer(clip3, visualization3, "Aboveground biomass carbon");
 
 
+                                                                                // Unsupervised Jaipur
+var region = ee.FeatureCollection("users/ucanwhatsappme/JaipurCity");
+
+Map.setCenter(75.78, 27.1052, 9);
+var input = ee.Image('LANDSAT/LE7_TOA_1YEAR/2001');
+
+var clip=input.clip(region);
+
+
+Map.addLayer(clip.paint(region, 0, 2), {}, 'region');
+
+// Make the training dataset.
+var training = clip.sample({
+  region: region,
+  scale: 30,
+  numPixels: 5000
+});
+
+// Instantiate the clusterer and train it.
+var clusterer = ee.Clusterer.wekaKMeans(15).train(training);
+
+// Cluster the input using the trained clusterer.
+var result = clip.cluster(clusterer);
+
+// Display the clusters with random colors.
+Map.addLayer(result.randomVisualizer(), {}, 'clusters');
+
 
