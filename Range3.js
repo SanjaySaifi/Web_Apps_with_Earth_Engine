@@ -1,5 +1,5 @@
 var region = ee.FeatureCollection("users/ucanwhatsappme/range3");
-Map.setCenter(78.3869, 26.3398, 14);
+Map.setCenter(78.3869, 26.3398, 11);
 
 
 
